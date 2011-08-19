@@ -75,6 +75,12 @@ module Code2Gist
     post_data.merge!("description" => description)
 
     result = Net::HTTP.post_form(URI.parse("http://gist.github.com/api/v1/json/new"), post_data)
+    if result.code == "401"
+      $stderr.puts "Your GitHub login/token credentials are incorrect"
+    elsif result.code != "200"
+      $stderr.puts "There was a problem communicating with http://gist.github.com (#{result.code} error)"
+    end
+
     parsed_json = JSON(result.body)
     repo = nil
     parsed_json['gists'].each do |key, val|
