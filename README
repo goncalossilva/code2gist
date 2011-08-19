@@ -1,8 +1,0 @@
-# code2gist
-
-This library parses text and looks for this pattern:
-    ```filename.extension
-    some code
-    ```
-
-It uploads all matches to http://gist.github.com and returns the link to it.
