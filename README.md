@@ -44,6 +44,15 @@ gists:
     Code2Gist::Config.github_login = "your_login"
     Code2Gist::Config.github_token = "your_token"
 
+### Command-line interface
+
+Use `code2gist`from the command-line. Just run:
+
+    code2gist file "optional description"
+
+It supports all options. Check `code2gist --help` to see how to use them
+properly.
+
 ## Real example
 
     code = <<-eoc

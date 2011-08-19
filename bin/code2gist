@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require "optparse"
+require "code2gist"
+
+options = {}
+OptionParser.new do |opt|
+  opt.banner = "Usage: code2gist file [description] [OPTS]"
+  opt.on('-e', '--embed', 'Embed links to the code', "Default: false") { |e| options[:embed] = e }
+  opt.on('-h', '--html', 'Assume it\'s HTML. Use this in combination with --embed.', "Default: false") { |h| options[:html] = h }
+  opt.on('-l', '--login LOGIN', String, 'Your GitHub login (to be the owner of the gist)') { |l| options[:login] = l }
+  opt.on('-t', '--token TOKEN', String, 'Your GitHub api token (to be the owner of the gist)') { |t| options[:token] = t }
+  opt.parse!(ARGV)
+end
+
+path = ARGV[0]
+description = ARGV[1] || ""
+
+if path.nil? || !File.exists?(path)
+  $stderr.puts "You must specify a valid file to read from"
+  exit
+end
+
+login = options.delete(:login)
+token = options.delete(:token)
+
+if login && options
+  Code2Gist::Config.github_login = login
+  Code2Gist::Config.github_token = token
+end
+
+puts Code2Gist.upload(File.read(path), description, options)
