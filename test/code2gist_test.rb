@@ -32,10 +32,10 @@ class Code2GistTest < Test::Unit::TestCase
 
     assert Code2Gist.upload(code, "test description") =~ /https:\/\/gist\.github\.com\/\d+/
 
-    assert Code2Gist.upload(code, "another description", :embed => true) =~ /https:\/\/gist.github.com\/\d+\?file=\w+\.\w+/
+    assert Code2Gist.replace(code, "another description") =~ /https:\/\/gist.github.com\/\d+\?file=\w+\.\w+/
 
-    assert Code2Gist.upload(code, "yet another description", :embed => true, :html => true) =~ /<script src="https:\/\/gist.github.com\/\d+\.js\?file=\w+\.\w+"><\/script>/
+    assert Code2Gist.replace(code, "yet another description", :html => true) =~ /<script src="https:\/\/gist.github.com\/\d+\.js\?file=\w+\.\w+"><\/script>/
 
-    assert Code2Gist.upload(nocode, "no code!") == "No code blocks found"
+    assert Code2Gist.replace(nocode, "no code!") == nocode
   end
 end

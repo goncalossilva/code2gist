@@ -4,6 +4,8 @@ require "json"
 
 module Code2Gist
   extend self
+  
+  CODE_REGEX = /```(\w+\.\w+)?[^\n]*\n(.*?)```/m
 
   module Config
     def self.github_login
@@ -20,28 +22,29 @@ module Code2Gist
     end
   end
 
-  def upload(text, description = nil, opts = {})
-    options = {:embed => false, :html => false}.merge(opts)
-
-    code_regex = /```(\w+\.\w+)?[^\n]*\n(.*?)```/m
+  def upload(text, description = nil)
     new_text = name_nameless_code_blocks(text)
 
-    code_blocks = Hash[*new_text.scan(code_regex).flatten]
-    
+    code_blocks = Hash[*new_text.scan(CODE_REGEX).flatten]
+
     if code_blocks.empty?
-      return "No code blocks found"
+      return nil
     end
 
-    gist_url = get_gist(code_blocks, description)
+    get_gist(code_blocks, description)
+  end
 
-    if options[:embed]
-      if options[:html]
-        new_text.gsub(code_regex, "<script src=\"#{gist_url}.js?file=\\1\"></script>")
-      else
-        new_text.gsub(code_regex, "#{gist_url}?file=\\1")
-      end
+  def replace(text, description = nil, opts = {})
+    options = {:html => false}.merge(opts)
+
+    new_text = name_nameless_code_blocks(text)
+
+    gist_url = upload(new_text, description)
+
+    if options[:html]
+      new_text.gsub(CODE_REGEX, "<script src=\"#{gist_url}.js?file=\\1\"></script>")
     else
-      gist_url
+      new_text.gsub(CODE_REGEX, "#{gist_url}?file=\\1")
     end
   end
 

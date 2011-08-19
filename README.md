@@ -1,12 +1,17 @@
 # code2gist
 
-This library parses text and looks for this pattern:
+This library looks for code blocks in your text and uploads them to
+http://gist.github.com. Then, it can either give you the link to it or
+replace your code blocks inline for their respective gist.github.com
+links.
+
+The code must follow this pattern:
 
     ```filename.extension
     some code
     ```
 
-It uploads all matches to http://gist.github.com and returns the link to it. The filename and extension are optional — it'll assume it's an untitled plain text file if you don't specify what it is.
+The filename and extension are optional — it'll assume it's an untitled plain text file if you don't specify what it is.
 
 ## Usage
 
@@ -15,26 +20,23 @@ It's very simple:
     require 'code2gist'
     Code2Gist.upload(your_text, "example description")
 
-### Options
-It supports a couple of boolean options:
+Or:
 
-- `:embed` (default: `false`)
-- `:html` (default: `false`)
+    new_text = Code2Gist.replace(your_text, "another example description")
+
+### Options
+When replacing, there is one option available: `:html` (default:
+`false`).
 
 Quick example:
 
-    Code2Gist.upload(your_markdown_text, "another description", :embed => true, :html => true)
+    Code2Gist.replace(your_markdown_text, "yad", :html => true)
 
-If you pass `:embed => true`to it, it will replace all code blocks with
-links to the appropriate file at http://gist.github.com. If you also
-pass `:html => true`, it will replace all code blocks with embeded
-gists.
-
-This is specially useful if your using markdown/textile and would like
+This is specially useful if you're using markdown/textile and would like
 to have all your code blocks in a gist and embeded in your HTML. For
 example:
 
-    html = Markdown.new(Code2Gist.upload(text, "Article code snippets", :embed => true, :html => true)).to_html
+    html = Markdown.new(Code2Gist.replace(text, "Code snippets from article X", :html => true)).to_html
 
 ### I want to be the owner of the gist!
 
@@ -48,7 +50,15 @@ gists:
 
 Use `code2gist`from the command-line. Just run:
 
-    code2gist file "optional description"
+    $ code2gist upload file "optional description"
+
+Or:
+
+    $ code2gist replace file "optional description"
+
+Or even:
+
+    $ code2gist replace file "optional description" --substitute # this will change your file in place!
 
 It supports all options. Check `code2gist --help` to see how to use them
 properly.
@@ -77,7 +87,7 @@ properly.
 
     Code2Gist.upload(code, "my description) # => https://gist.github.com/1157214
 
-    Code2Gist.upload(code, "another description", :embed => true) # =>
+    Code2Gist.replace(code, "another description") # =>
     #  This is just a regular `document`
     #
     #  It can have code!
@@ -89,7 +99,7 @@ properly.
     #
     #  The end
 
-    Code2Gist.upload(code, "yet another description", :embed => true, :html => true) # =>
+    Code2Gist.replace(code, "yet another description", :html => true) # =>
     #  This is just a regular `document`
     #
     #  It can have code!
