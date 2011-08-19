@@ -26,7 +26,13 @@ module Code2Gist
     code_regex = /```(\w+\.\w+)?[^\n]*\n(.*?)```/m
     new_text = name_nameless_code_blocks(text)
 
-    gist_url = get_gist(Hash[*new_text.scan(code_regex).flatten], description)
+    code_blocks = Hash[*new_text.scan(code_regex).flatten]
+    
+    if code_blocks.empty?
+      return "No code blocks found"
+    end
+
+    gist_url = get_gist(code_blocks, description)
 
     if options[:embed]
       if options[:html]

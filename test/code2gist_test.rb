@@ -24,10 +24,18 @@ class Code2GistTest < Test::Unit::TestCase
       The end
     eoc
 
-    puts Code2Gist.upload(code, "test description")# =~ /https:\/\/gist\.github\.com\/\d+/
+    nocode = <<-eonc
+      There is no code here
 
-    puts Code2Gist.upload(code, "another description", :embed => true)# =~ /https:\/\/gist.github.com\/\d+\?file=\w+\.\w+/
+      But it should work normally
+    eonc
 
-    puts Code2Gist.upload(code, "yet another description", :embed => true, :html => true)# =~ /<script src="https:\/\/gist.github.com\/\d+\.js\?file=\w+\.\w+"><\/script>/
+    assert Code2Gist.upload(code, "test description") =~ /https:\/\/gist\.github\.com\/\d+/
+
+    assert Code2Gist.upload(code, "another description", :embed => true) =~ /https:\/\/gist.github.com\/\d+\?file=\w+\.\w+/
+
+    assert Code2Gist.upload(code, "yet another description", :embed => true, :html => true) =~ /<script src="https:\/\/gist.github.com\/\d+\.js\?file=\w+\.\w+"><\/script>/
+
+    assert Code2Gist.upload(nocode, "no code!") == "No code blocks found"
   end
 end
