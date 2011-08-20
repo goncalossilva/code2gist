@@ -1,6 +1,7 @@
 # code2gist
 
 This library parses text and looks for this pattern:
+
     ```filename.extension
     some code
     ```
@@ -16,11 +17,13 @@ It's very simple:
 
 ### Options
 It supports a couple of boolean options:
+
 - `:embed` (default: `false`)
 - `:html` (default: `false`)
 
-    Code2Gist.upload(your_markdown_text, "another description", :embed
-=> true, :html => true)
+Quick example:
+
+    Code2Gist.upload(your_markdown_text, "another description", :embed => true, :html => true)
 
 If you pass `:embed => true`to it, it will replace all code blocks with
 links to the appropriate file at http://gist.github.com. If you also
@@ -31,13 +34,13 @@ This is specially useful if your using markdown/textile and would like
 to have all your code blocks in a gist and embeded in your HTML. For
 example:
 
-    html = Markdown.new(Code2Gist.upload(text, "Article code snippets",
-:embed => true, :html => true)).to_html
+    html = Markdown.new(Code2Gist.upload(text, "Article code snippets", :embed => true, :html => true)).to_html
 
 ### I want to be the owner of the gist!
 
 It's okay, just specify your username and API token before uploading any
 gists:
+
     Code2Gist::Config.github_login = "your_login"
     Code2Gist::Config.github_token = "your_token"
 
