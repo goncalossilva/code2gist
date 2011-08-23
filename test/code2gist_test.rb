@@ -21,6 +21,11 @@ class Code2GistTest < Test::Unit::TestCase
       Not sure what this is
       ```
 
+      Spaces are allowed, too:
+      ```       itworks.tx     
+      It works!
+      ```
+
       The end
     eoc
 

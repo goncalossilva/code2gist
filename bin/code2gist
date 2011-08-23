@@ -39,7 +39,7 @@ elsif action == "replace"
   new_text = Code2Gist.replace(File.read(path), description, options)
 
   if substitute
-    File.write(path, 'w') { |f| f.write(new_text) }
+    File.open(path, 'w') { |f| f.write(new_text) }
   else
     puts new_text
   end

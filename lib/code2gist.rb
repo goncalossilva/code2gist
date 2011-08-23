@@ -5,7 +5,7 @@ require "json"
 module Code2Gist
   extend self
   
-  CODE_REGEX = /```(\w+\.\w+)?[^\n]*\n(.*?)```/m
+  CODE_REGEX = /```((?:\s*)\w+\.\w+)?[^\n]*\n(.*?)```/m
 
   module Config
     def self.github_login
@@ -52,7 +52,7 @@ module Code2Gist
 
   def name_nameless_code_blocks(text)
     nameless_blocks = 0
-    new_text = text.gsub(/```(\w+\.\w+)?/).with_index do |match, index|
+    new_text = text.gsub(/```((?:\s*)\w+\.\w+)?/).with_index do |match, index|
       if index%2 == 0 && match.size == 3
         nameless_blocks += 1;
         "```untitled_#{nameless_blocks}.txt"
