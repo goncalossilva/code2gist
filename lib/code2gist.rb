@@ -35,11 +35,11 @@ module Code2Gist
   end
 
   def replace(text, description = nil, opts = {})
-    options = {:html => false}.merge(opts)
+    options = {:html => false, :anonymous => false}.merge(opts)
 
     new_text = name_nameless_code_blocks(text)
 
-    gist_url = upload(new_text, description)
+    gist_url = upload(new_text, description, options[:anonymous])
 
     if options[:html]
       new_text.gsub(CODE_REGEX, "<script src=\"#{gist_url}.js?file=\\1\"></script>")
@@ -64,7 +64,7 @@ module Code2Gist
     new_text
   end
 
-  def get_gist(data, description)
+  def get_gist(data, description, anonymous)
     post_data = {}
     data.each_with_index do |(filename, content), index|
       post_data.merge!("files[#{filename}]" => content)
@@ -73,7 +73,7 @@ module Code2Gist
     post_data.merge!(
       "login" => Code2Gist::Config.github_login,
       "token" => Code2Gist::Config.github_token
-    ) unless Code2Gist::Config.github_login.nil? || Code2Gist::Config.github_token.nil?
+    ) unless anonymous || Code2Gist::Config.github_login.nil? || Code2Gist::Config.github_token.nil?
 
     post_data.merge!("description" => description)
 
