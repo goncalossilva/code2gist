@@ -2,9 +2,9 @@
 
 Gem::Specification.new do |s|
   s.name              = "code2gist"
-  s.version           = "0.0.4"
+  s.version           = "0.0.5"
   s.platform          = Gem::Platform::RUBY
-  s.authors           = ["Gonçalo Silva"]
+  s.authors           = ["Goncalo Silva"]
   s.email             = ["goncalossilva@gmail.com"]
   s.homepage          = "http://github.com/goncalossilva/code2gist"
   s.summary           = "Parse text files (markdown/textile/whatever) for code blocks and gist them"

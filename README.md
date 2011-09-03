@@ -25,18 +25,24 @@ Or:
     new_text = Code2Gist.replace(your_text, "another example description")
 
 ### Options
-When replacing, there is one option available: `:html` (default:
-`false`).
+When replacing, there are two options available: `:html` (default:
+`false`) and `:anonymous` (default: `false`).
 
 Quick example:
 
-    Code2Gist.replace(your_markdown_text, "yad", :html => true)
+    Code2Gist.replace(your_markdown_text, "yay!", :html => true)
 
 This is specially useful if you're using markdown/textile and would like
 to have all your code blocks in a gist and embeded in your HTML. For
 example:
 
     html = Markdown.new(Code2Gist.replace(text, "Code snippets from article X", :html => true)).to_html
+
+You can use the `:anonymous` option to avoid authenticating that code
+upload, even if the credentials are available (see next section):
+
+    Code2Gist.replace(your_markdown_text, "anonymous!", :anonymous =>
+true)
 
 ### I want to be the owner of the gist!
 
