@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    code2gist (0.0.4)
+    code2gist (0.0.5)
 
 GEM
   specs:

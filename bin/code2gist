@@ -27,14 +27,16 @@ end
 login = options.delete(:login)
 token = options.delete(:token)
 substitute = options.delete(:substitute)
+anonymous = true
 
 if login && options
   Code2Gist::Config.github_login = login
   Code2Gist::Config.github_token = token
+  anonymous = false
 end
 
 if action == "upload"
-  puts Code2Gist.upload(File.read(path), description)
+  puts Code2Gist.upload(File.read(path), description, anonymous)
 elsif action == "replace"
   new_text = Code2Gist.replace(File.read(path), description, options)
 

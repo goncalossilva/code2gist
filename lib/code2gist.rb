@@ -22,7 +22,7 @@ module Code2Gist
     end
   end
 
-  def upload(text, description = nil)
+  def upload(text, description = nil, anonymous = false)
     new_text = name_nameless_code_blocks(text)
 
     code_blocks = Hash[*new_text.scan(CODE_REGEX).flatten]
@@ -31,7 +31,7 @@ module Code2Gist
       return nil
     end
 
-    get_gist(code_blocks, description)
+    get_gist(code_blocks, description, anonymous)
   end
 
   def replace(text, description = nil, opts = {})
